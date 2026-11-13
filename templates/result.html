@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="result-card">
+
+    <p class="eyebrow">MODEL PREDICTION</p>
+
+    <h2>{{ name }}</h2>
+
+    {% if approved %}
+
+        <div class="result approved">
+            Loan Predicted: APPROVED
+        </div>
+
+    {% else %}
+
+        <div class="result rejected">
+            Loan Predicted: REJECTED
+        </div>
+
+        <h3>Possible Reasons for Rejection</h3>
+
+        <p class="muted">
+            The following factors may have affected the ML prediction:
+        </p>
+
+        {% if reasons %}
+            <ul>
+                {% for reason in reasons %}
+                    <li>{{ reason }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No specific risk factor was identified.</p>
+        {% endif %}
+
+    {% endif %}
+
+    <p class="muted">
+        Model used: {{ model_name }}
+    </p>
+
+    <p class="notice">
+        This is an educational prediction from synthetic training data,
+        not a real lending decision or guarantee.
+        Rejection factors are indicative, not confirmed reasons.
+    </p>
+
+    <a class="btn" href="{{ url_for('predict') }}">New Prediction</a>
+
+    <a class="btn secondary" href="{{ url_for('history') }}">View History</a>
+
+</div>
+
+{% endblock %}

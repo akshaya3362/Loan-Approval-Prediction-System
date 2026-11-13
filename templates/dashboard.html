@@ -1,0 +1,304 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+.dashboard-heading {
+    margin-bottom: 25px;
+}
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+    margin: 25px 0;
+}
+
+.dashboard-stat {
+    background: white;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+}
+
+.dashboard-stat span {
+    color: #666;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.dashboard-stat strong {
+    font-size: 28px;
+    color: #176b87;
+}
+
+.dashboard-panel {
+    background: white;
+    padding: 24px;
+    margin: 25px 0;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+}
+
+.chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.chart-card {
+    background: white;
+    padding: 15px;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.chart-card h3 {
+    font-size: 17px;
+    margin-bottom: 15px;
+}
+
+.chart-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+}
+
+.dashboard-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.section-description {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+</style>
+
+
+<!-- DASHBOARD HEADING -->
+
+<div class="dashboard-heading">
+
+    <h1>Hello, {{ user_name }}!</h1>
+
+    <p class="muted">
+        Welcome to your Loan Approval Prediction Dashboard.
+    </p>
+
+</div>
+
+
+<!-- STATISTICS -->
+
+{% set rejected = total - approved %}
+
+{% if total > 0 %}
+    {% set approval_rate = (approved / total * 100)|round(1) %}
+{% else %}
+    {% set approval_rate = 0 %}
+{% endif %}
+
+
+<div class="dashboard-stats">
+
+    <div class="dashboard-stat">
+        <span>Total Applications</span>
+        <strong>{{ total }}</strong>
+    </div>
+
+    <div class="dashboard-stat">
+        <span>Approved Applications</span>
+        <strong>{{ approved }}</strong>
+    </div>
+
+    <div class="dashboard-stat">
+        <span>Rejected Applications</span>
+        <strong>{{ rejected }}</strong>
+    </div>
+
+    <div class="dashboard-stat">
+        <span>Approval Rate</span>
+        <strong>{{ approval_rate }}%</strong>
+    </div>
+
+</div>
+
+
+<!-- PREDICTION ACTIONS -->
+
+<div class="dashboard-panel">
+
+    <h2>Loan Prediction System</h2>
+
+    <p class="section-description">
+        Enter applicant financial details and use the trained
+        Machine Learning model to predict loan approval.
+    </p>
+
+    <div class="dashboard-actions">
+
+        <a class="btn" href="{{ url_for('predict') }}">
+            New Loan Prediction
+        </a>
+
+        <a class="btn secondary" href="{{ url_for('history') }}">
+            View Prediction History
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- ML VISUALIZATION SECTION -->
+
+<div class="dashboard-panel">
+
+    <h2>Machine Learning Analysis & Visualizations</h2>
+
+    <p class="section-description">
+        Explore the dataset insights and model analysis
+        generated during Machine Learning training.
+    </p>
+
+    <div class="chart-grid">
+
+
+        <!-- CHART 1 -->
+
+        <div class="chart-card">
+
+            <h3>Loan Approval Distribution</h3>
+
+            <img
+                src="{{ url_for('static', filename='plots/loan_approval_distribution.png') }}"
+                alt="Loan Approval Distribution"
+            >
+
+        </div>
+
+
+        <!-- CHART 2 -->
+
+        <div class="chart-card">
+
+            <h3>Credit Score Distribution</h3>
+
+            <img
+                src="{{ url_for('static', filename='plots/credit_score_distribution.png') }}"
+                alt="Credit Score Distribution"
+            >
+
+        </div>
+
+
+        <!-- CHART 3 -->
+
+        <div class="chart-card">
+
+            <h3>Monthly Income vs Loan Amount</h3>
+
+            <img
+                src="{{ url_for('static', filename='plots/income_vs_loan.png') }}"
+                alt="Income vs Loan Amount"
+            >
+
+        </div>
+
+
+        <!-- CHART 4 -->
+
+        <div class="chart-card">
+
+            <h3>Correlation Heatmap</h3>
+
+            <img
+                src="{{ url_for('static', filename='plots/correlation_matrix.png') }}"
+                alt="Correlation Matrix"
+            >
+
+        </div>
+
+
+        <!-- CHART 5 -->
+
+        <div class="chart-card">
+
+            <h3>Employment Status vs Loan Approval</h3>
+
+            <img
+                src="{{ url_for('static', filename='plots/employment_approval.png') }}"
+                alt="Employment Approval Chart"
+            >
+
+        </div>
+
+
+        <!-- CHART 6 -->
+
+        <div class="chart-card">
+
+            <h3>Approved vs Rejected Applications</h3>
+
+            <img
+                src="{{ url_for('static', filename='plots/approval_pie_chart.png') }}"
+                alt="Loan Approval Pie Chart"
+            >
+
+        </div>
+
+
+        <!-- CHART 7 -->
+
+        <div class="chart-card">
+
+            <h3>Top 10 Important Features</h3>
+
+            <img
+                src="{{ url_for('static', filename='plots/feature_importance.png') }}"
+                alt="Feature Importance"
+            >
+
+        </div>
+
+
+        <!-- CHART 8 -->
+
+        <div class="chart-card">
+
+            <h3>Model Confusion Matrix</h3>
+
+            <img
+                src="{{ url_for('static', filename='plots/confusion_matrix.png') }}"
+                alt="Confusion Matrix"
+            >
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- FOOTER NOTE -->
+
+<div class="dashboard-panel">
+
+    <h3>About This Analysis</h3>
+
+    <p class="section-description">
+        This project uses synthetic loan applicant data for
+        educational Machine Learning purposes. Predictions and
+        visualizations are not actual bank lending decisions.
+    </p>
+
+</div>
+
+{% endblock %}
