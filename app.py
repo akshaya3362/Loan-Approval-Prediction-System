@@ -250,8 +250,6 @@ def history():
 def logout():
     session.clear()
     return redirect(url_for("home"))
-
-
 @app.context_processor
 def inject_user():
     return {"user_name": session.get("user_name")}
@@ -261,4 +259,4 @@ init_db()
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=False)
